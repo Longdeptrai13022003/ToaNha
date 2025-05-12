@@ -16,6 +16,10 @@ use yii\helpers\Html;
 
 <ul class="nav navbar-nav">
 
+    <li>
+        <?=Html::a('<i class="fa fa-home"></i> Tổng quan', \yii\helpers\Url::to(['site/index']))?>
+    </li>
+
     <?php if(myAPI::isAccess2('User', 'Khach-hang')): ?>
     <li>
         <?=Html::a('<i class="fa fa-users"></i> Khách hàng', \yii\helpers\Url::to(['user/khach-hang']))?>

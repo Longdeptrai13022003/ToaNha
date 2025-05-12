@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="details">
                 <div class="number">
-                    Tong thu: <span class="small-font tong_thu"><?=$tongThu?></span>
+                    Tổng thu: <span class="small-font tong_thu"><?=$tongThu?></span>
                 </div>
             </div>
         </div>

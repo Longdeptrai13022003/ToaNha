@@ -9,6 +9,7 @@ use backend\models\DanhMuc;
 use backend\models\HoaDon;
 use backend\models\PhieuChi;
 use backend\models\PhongKhach;
+use backend\models\QuanLyGiaoDich;
 use backend\models\QuanLyHoaDon;
 use backend\models\QuanLyPhong;
 use backend\models\QuanLyPhongKhach;
@@ -17,6 +18,7 @@ use backend\models\search\QuanLyDiaChiNhanHangSearch;
 use backend\models\search\QuanLyPhongSearch;
 use backend\models\VaiTro;
 use backend\models\Vaitrouser;
+use common\models\exportThuChi;
 use common\models\myAPI;
 use common\models\User;
 use DateTime;
@@ -26,6 +28,7 @@ use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -49,7 +52,7 @@ class DanhMucController extends Controller
         $arr_action = [
             'toa-nha-phong-o', 'create-toa-nha-phong-o', 'update-toa-nha-phong-o','tim-phong-o','don-gia','get-don-gia-phong','get-gia-nuoc-khoi',
             'view','get-chi-phi','luu-chi-phi','xoa-chi-phi','get-bang-gia','get-ngay-thang','get-lich-dat','save-phong','update-phong','xoa-phong',
-            'thong-ke-phong','moi-gioi','thong-ke-moi-gioi','update-moi-gioi','chi-phi','tong-hop','get-chart-data'
+            'thong-ke-phong','moi-gioi','thong-ke-moi-gioi','update-moi-gioi','chi-phi','tong-hop','get-chart-data', 'thong-ke-thu-chi'
         ];
         $rules = [];
         $this->contentAPI = json_decode(file_get_contents('php://input'));
@@ -894,6 +897,103 @@ class DanhMucController extends Controller
             'tongThu' => number_format($tongThu,0,',','.'),
             'tongChi' => number_format($tongChi,0,',','.'),
             'loiNhuan' => number_format($tongThu - $tongChi,0,',','.'),
+        ];
+    }
+
+    //thong-ke-thu-chi
+    public function actionThongKeThuChi() {
+        $fromDate = myAPI::convertDMY2YMD($_POST['from_ngay_thong_ke']);
+        $toDate = myAPI::convertDMY2YMD($_POST['to_ngay_thong_ke']);
+
+        // Báo cáo lãi lỗ
+        $tongThu = QuanLyHoaDon::find()
+            ->andFilterWhere(['active' => 1])
+            ->andFilterWhere(['between', 'created', $fromDate, $toDate])
+            ->sum('da_thanh_toan') ?? 0;
+
+        $phieuChis = PhieuChi::find()
+            ->andFilterWhere(['active' => 1])
+            ->andFilterWhere(['between', 'created', $fromDate, $toDate])
+            ->all();
+
+        $tongChi = 0;
+        foreach($phieuChis as $phieuChi){
+            $tongChi += ChiTietChiPhi::find()
+                ->andFilterWhere(['phieu_chi_id' => $phieuChi->id])
+                ->sum('da_thanh_toan') ?? 0;
+        }
+
+        $bao_cao_lai_lo = [
+            'tong_thu' => $tongThu,
+            'tong_chi' => $tongChi,
+            'loi_nhuan' => $tongThu - $tongChi,
+        ];
+
+
+        // Hợp đồng
+        $hopDongs = QuanLyPhongKhach::find()
+            ->andFilterWhere(['active' => 1])
+            ->andFilterWhere(['between', 'thoi_gian_hop_dong_den', $fromDate, $toDate])
+            ->all();
+
+        // Hóa đơn
+        $hoaDons = QuanLyHoaDon::find()
+            ->andFilterWhere(['active' => 1])
+            ->andFilterWhere(['between', 'created', $fromDate, $toDate])
+            ->all();
+
+        // Giao dịch
+        $giaoDichs = QuanLyGiaoDich::find()
+            ->andFilterWhere(['active' => 1])
+            ->andFilterWhere(['between', 'created', $fromDate, $toDate])
+            ->all();
+
+        // Công nợ
+        $congNos = QuanLyHoaDon::find()
+            ->andFilterWhere(['active' => 1])
+            ->andFilterWhere(['between', 'created', $fromDate, $toDate])
+            ->andFilterWhere(['<', 'da_thanh_toan', 'tong_tien'])
+            ->all();
+
+        // Phòng ở
+        $phongOs = QuanLyPhong::find()
+            ->andFilterWhere(['active_phong' => 1])
+            ->andFilterWhere(['between', 'thoi_gian_hop_dong_den', $fromDate, $toDate])
+            ->all();
+
+        // Chi phí môi giới
+        $chiPhiMoiGiois = QuanLyPhongKhach::find()
+            ->andFilterWhere(['active' => 1])
+            ->andFilterWhere(['between', 'thoi_gian_hop_dong_den', $fromDate, $toDate])
+            ->andFilterWhere(['>','so_tien_moi_gioi',0])
+            ->all();
+
+        $data = [
+            'bao_cao_lai_lo' => $bao_cao_lai_lo,
+            'hop_dong' => $hopDongs,
+            'hoa_don' => $hoaDons,
+            'giao_dich' => $giaoDichs,
+            'cong_no' => $congNos,
+            'phong_o' => $phongOs,
+            'chi_phi_moi_gioi' => $chiPhiMoiGiois,
+            'chi_phi_khac' => $phieuChis,
+        ];
+
+        $export = new exportThuChi();
+        $export->data = $data;
+        $export->path_file = dirname(dirname(__DIR__)) . '/files_excel/';
+        $export->from_date = $fromDate;
+        $export->to_date = $toDate;
+        $export->stream = false;
+
+        $filename = $export->run();
+        $file = str_replace('index.php', '', Url::home(true)) . 'files_excel/' . $filename;
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return [
+            'title' => 'Tải file',
+            'link_file' => \yii\helpers\Html::a('<i class="fa fa-cloud-download"></i> Nhấn vào đây để tải file về!', $file, ['class' => 'text-primary', 'target' => '_blank']),
+            'message' => 'Nhấn vào đây để tải file về!'
         ];
     }
 }

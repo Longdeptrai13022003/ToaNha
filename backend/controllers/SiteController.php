@@ -309,6 +309,10 @@ class SiteController extends Controller
             ]);
             $title = 'Thêm khách hàng';
         }
+        else if($_POST['type'] == 'thong_ke_thu_chi'){
+            $content = $this->renderAjax('../danh-muc/_form_thong_ke_thu_chi');
+            $title = 'Thống kê thu - chi';
+        }
         Yii::$app->response->format = Response::FORMAT_JSON;
         return [
             'title' => $title,
