@@ -478,10 +478,6 @@ table.cke_dialog.cke_browser_webkit.cke_ltr {
 .font-size-16{
     font-size: 16pt;
 }
-.jconfirm .jconfirm-box div.jconfirm-content-pane .jconfirm-content {
-    overflow: unset;
-    padding-bottom: 20px;
-}
 .text-white{
     color: #FFFFFF;
 }
