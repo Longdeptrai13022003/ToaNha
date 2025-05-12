@@ -27,7 +27,9 @@ CrudAsset::register($this);
             'toolbar'=> [
                 ['content'=>
                     Html::a('<i class="glyphicon glyphicon-repeat"></i> Khôi phục lưới', [''],
-                        ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Khôi phục lưới'])
+                        ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Khôi phục lưới']).
+                    Html::a('<i class="fa fa-download"></i> Báo cáo thống kê', '#',
+                        ['id' => 'btn-bao-cao-thong-ke','class'=>'btn btn-primary', 'title'=>'Tải báo cáo thống kê'])
                 ],
             ],
             'striped' => true,
