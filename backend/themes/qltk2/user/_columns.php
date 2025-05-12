@@ -1,118 +1,157 @@
 <?php
 use yii\helpers\Url;
+use yii\helpers\Html;
+
 /* @var $searchModel Backend\models\search\QuanLyUserSearch */
 
 return [
     [
         'class' => 'kartik\grid\SerialColumn',
         'header' => 'STT',
-        'headerOptions' => ['class' => 'text-primary', 'width' => '1%']
+        'headerOptions' => ['class' => 'text-primary text-center align-middle', 'width' => '3%'],
+        'contentOptions' => ['class' => 'text-center align-middle'],
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
+        'class' => '\kartik\grid\DataColumn',
         'label' => 'Ảnh đại diện',
-        'attribute'=>'anhdaidien',
-        'headerOptions' => ['width' => '1%', 'class' => 'text-center'],
-        'contentOptions' => ['class' => 'text-center'],
+        'attribute' => 'anhdaidien',
+        'headerOptions' => ['class' => 'text-center align-middle', 'width' => '8%'],
+        'contentOptions' => ['class' => 'text-center align-middle'],
         'value' => function ($model) {
             $imageWebPath = Yii::getAlias('@web/hinh-anh/') . $model->anhdaidien;
             $imageFilePath = Yii::getAlias('@webroot/hinh-anh/') . $model->anhdaidien;
-            return is_file($imageFilePath) ? \yii\helpers\Html::img($imageWebPath, ['width' => '100px', 'id' => 'hinh-anh', 'class' => 'img-thumbnail']) : '';
+            return is_file($imageFilePath)
+                ? Html::img($imageWebPath, [
+                    'style' => 'max-width:80px;',
+                    'class' => 'img-thumbnail img-fluid',
+                    'id' => 'hinh-anh'
+                ])
+                : '';
         },
-        'format'=>'raw',
-        'filter'=>false
+        'format' => 'raw',
+        'filter' => false
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
+        'class' => '\kartik\grid\DataColumn',
         'label' => 'Họ tên',
-        'attribute'=>'hoten',
-        'headerOptions' => ['width' => 'auto'],
-        'filter' => \yii\helpers\Html::activeTextInput(
-                $searchModel, 'hoten', [
-                    'class' => 'form-control',
-                    'placeholder' => 'Họ tên'
-                ]
-            )
+        'attribute' => 'hoten',
+        'headerOptions' => ['class' => 'text-center align-middle', 'width' => '20%'],
+        'contentOptions' => ['class' => 'align-middle'],
+        'filter' => Html::activeTextInput(
+            $searchModel, 'hoten', [
+                'class' => 'form-control',
+                'placeholder' => 'Họ tên'
+            ]
+        )
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
+        'class' => '\kartik\grid\DataColumn',
         'label' => 'Điện thoại',
-        'attribute'=>'dien_thoai',
-        'headerOptions' => ['width' => '10%'],
-        'filter' => \yii\helpers\Html::activeTextInput(
-                $searchModel, 'dien_thoai', [
-                    'class' => 'form-control',
-                    'placeholder' => 'Điện thoại KH'
-                ]
-            )
+        'attribute' => 'dien_thoai',
+        'headerOptions' => ['class' => 'text-center align-middle', 'width' => '10%'],
+        'contentOptions' => ['class' => 'align-middle text-center'],
+        'value' => function ($model) {
+            return '<i class="fa fa-phone"></i> ' . $model->dien_thoai;
+        },
+        'filter' => Html::activeTextInput(
+            $searchModel, 'dien_thoai', [
+                'class' => 'form-control',
+                'placeholder' => 'Điện thoại KH'
+            ]
+        ),
+        'format' => 'raw',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
+        'class' => '\kartik\grid\DataColumn',
         'label' => 'Tên đăng nhập',
-        'headerOptions' => ['width' => '20%'],
-        'attribute'=>'username',
-        'filter' => \yii\helpers\Html::activeTextInput(
-                $searchModel, 'username', [
-                    'class' => 'form-control',
-                    'placeholder' => 'Tên đăng nhập'
-                ]
-            )
+        'attribute' => 'username',
+        'headerOptions' => ['class' => 'text-center align-middle', 'width' => '20%'],
+        'contentOptions' => ['class' => 'align-middle'],
+        'filter' => Html::activeTextInput(
+            $searchModel, 'username', [
+                'class' => 'form-control',
+                'placeholder' => 'Tên đăng nhập'
+            ]
+        )
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
+        'class' => '\kartik\grid\DataColumn',
         'label' => 'Email',
-        'headerOptions' => ['width' => '10%'],
-        'attribute'=>'email',
-        'filter' => \yii\helpers\Html::activeTextInput(
-                $searchModel, 'email', [
-                    'class' => 'form-control',
-                    'placeholder' => 'Email'
-                ]
-            )
+        'attribute' => 'email',
+        'headerOptions' => ['class' => 'text-center align-middle', 'width' => 'auto'],
+        'contentOptions' => ['class' => 'align-middle'],
+        'value' => function ($model) {
+            $email = $model->email ? $model->email : 'Chưa có email';
+            return '<i class="fa fa-envelope"></i> ' . $email;
+        },
+        'filter' => Html::activeTextInput(
+            $searchModel, 'email', [
+                'class' => 'form-control',
+                'placeholder' => 'Email'
+            ]
+        ),
+        'format' => 'raw',
     ],
     [
         'class' => '\kartik\grid\DataColumn',
         'label' => 'Vai trò',
-        'headerOptions' => ['width' => '1%'],
         'attribute' => 'vai_tro',
-        'value' => function($data) {
+        'headerOptions' => ['class' => 'text-center align-middle', 'width' => '10%'],
+        'contentOptions' => ['class' => 'align-middle text-center'],
+        'value' => function ($data) {
             $roles = explode(',', $data->vai_tro);
             $roleLines = array_map('trim', $roles);
-            return implode('</br>', $roleLines);
+            return '<i class="fa fa-user-tag"></i> ' . implode('<br>', $roleLines);
         },
         'format' => 'raw',
-        'filter' => \yii\helpers\Html::dropDownList(
+        'filter' => Html::dropDownList(
             'QuanLyUserSearch[vai_tro]',
             $searchModel->vai_tro,
             \backend\models\VaiTro::$arr_vai_tro,
-            ['class' => 'form-control', 'prompt' => '']
+            [
+                'class' => 'form-control',
+                'prompt' => 'Tất cả'
+            ]
         )
     ],
-    // [
-    // 'class'=>'\kartik\grid\DataColumn',
-    // 'attribute'=>'id',
-    // ],
-
     [
         'header' => 'Sửa',
         'value' => function($data) {
-            return \yii\bootstrap\Html::a('<i class="fa fa-edit"></i>',Url::toRoute(['user/update', 'id' => $data->id]), ['role' => 'modal-remote', 'data-toggle' => 'tooltip','id'=>'select2']);
+            return \yii\bootstrap\Html::a(
+                '<i class="fa fa-edit"></i>',
+                Url::toRoute(['user/update', 'id' => $data->id]),
+                [
+                    'class' => 'btn btn-action btn-edit btn-sm',
+                    'role' => 'modal-remote',
+                    'data-toggle' => 'tooltip',
+                    'title' => 'Sửa thông tin'
+                ]
+            );
         },
         'format' => 'raw',
-        'headerOptions' => ['width' => '1%', 'class' => 'text-center'],
-        'contentOptions' => ['class' => 'text-center']
+        'headerOptions' => ['class' => 'text-center align-middle', 'width' => '5%'],
+        'contentOptions' => ['class' => 'text-center align-middle']
     ],
     [
         'header' => 'Xóa',
-        'headerOptions' => ['class' => 'text-center', 'width' => '1%'],
-        'contentOptions' => ['class' => 'text-center'],
+        'headerOptions' => ['class' => 'text-center align-middle', 'width' => '5%'],
+        'contentOptions' => ['class' => 'text-center align-middle'],
         'value' => function($data){
-            if($data->status == 10)
-                return \yii\bootstrap\Html::a('<i class="fa fa-trash"></i>', '#', ['class' => 'text-danger btn-huy-khoi-phuc-hoat-dong', 'data-value' => $data->id]);
+            if ($data->status == 10) {
+                return \yii\bootstrap\Html::a(
+                    '<i class="fa fa-trash"></i>',
+                    '#',
+                    [
+                        'class' => 'btn btn-delete btn-action btn-sm btn-huy-khoi-phuc-hoat-dong',
+                        'data-value' => $data->id,
+                        'data-toggle' => 'tooltip',
+                        'title' => 'Xóa thông tin',
+                    ]
+                );
+            }
             return '';
         },
-        'format' => 'raw'
+        'format' => 'raw',
     ]
 ];
 ?>
-

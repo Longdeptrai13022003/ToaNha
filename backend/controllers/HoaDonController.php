@@ -1077,83 +1077,107 @@ class HoaDonController extends Controller
             ])
         ];
     }
+
     public function actionSaveOCung()
     {
-        $hoaDon = HoaDon::findOne($_POST['hoaDonID']);
-        $hopDong = PhongKhach::findOne($hoaDon->phong_khach_id);
-        $phong = DanhMuc::findOne($hopDong->phong_id);
         Yii::$app->response->format = Response::FORMAT_JSON;
-        if (!is_null($hoaDon)){
-            if (isset($_POST['id'])) {
-                $ids = array_map('intval', $_POST['id']);
-                // Xóa người ở cùng không còn ở phòng
-                $hienTais = NguoiOCung::findAll(['hop_dong_id' => $hoaDon->phong_khach_id]);
-                foreach ($hienTais as $hienTai) {
-                    if (!in_array($hienTai->id, $ids)) {
-                        $chiTiet = ChiTietOCung::find()
-                            ->andFilterWhere(['nguoi_o_cung_id'=>$hienTai->id])->all();
-                        foreach ($chiTiet as $item){
-                            $item->delete();
-                        }
-                        $hienTai->delete();
-                    }
+
+        // Tìm hóa đơn
+        $hoaDon = HoaDon::findOne($_POST['hoaDonID']);
+        if (!$hoaDon) {
+            return [
+                'success' => false,
+                'content' => 'Hóa đơn không hợp lệ!'
+            ];
+        }
+
+        // Tìm hợp đồng và phòng
+        $hopDong = PhongKhach::findOne($hoaDon->phong_khach_id);
+        if (!$hopDong) {
+            return [
+                'success' => false,
+                'content' => 'Hợp đồng không hợp lệ!'
+            ];
+        }
+        $phong = DanhMuc::findOne($hopDong->phong_id);
+        if (!$phong) {
+            return [
+                'success' => false,
+                'content' => 'Phòng không hợp lệ!'
+            ];
+        }
+
+        // Xóa toàn bộ người ở cùng cũ
+        $nguoiOCungCu = NguoiOCung::findAll(['hop_dong_id' => $hopDong->id]);
+        foreach ($nguoiOCungCu as $nguoi) {
+            ChiTietOCung::deleteAll(['nguoi_o_cung_id' => $nguoi->id]);
+            $nguoi->delete();
+        }
+
+        // Thêm người ở cùng mới từ form
+        $soNguoiOCung = 0; // Đếm số người ở cùng mới
+        if (isset($_POST['ho_ten']) && is_array($_POST['ho_ten'])) {
+            $hoTens = $_POST['ho_ten'];
+            $dienThoais = $_POST['dien_thoai'] ?? [];
+
+            foreach ($hoTens as $index => $hoTen) {
+                if (trim($hoTen) == '') {
+                    continue;
                 }
-            }else{
-                $hienTais = NguoiOCung::findAll(['hop_dong_id' => $hoaDon->phong_khach_id]);
-                foreach ($hienTais as $hienTai) {
-                    $chiTiet = ChiTietOCung::find()
-                        ->andFilterWhere(['nguoi_o_cung_id'=>$hienTai->id])->all();
-                    foreach ($chiTiet as $item){
-                        $item->delete();
-                    }
-                    $hienTai->delete();
+
+                $oCung = new NguoiOCung();
+                $oCung->ho_ten = $hoTen;
+                $oCung->dien_thoai = $dienThoais[$index] ?? '';
+                $oCung->hop_dong_id = $hopDong->id;
+
+                if ($oCung->save()) {
+                    $detail = new ChiTietOCung();
+                    $detail->hoa_don_id = $hoaDon->id;
+                    $detail->nguoi_o_cung_id = $oCung->id;
+                    $detail->save();
+                    $soNguoiOCung++;
                 }
             }
-            if (isset($_POST['ho_ten'])){
-                //Them nguoi o cung moi neu co
-                $hoTens = $_POST['ho_ten'];
-                $dienThoais = $_POST['dien_thoai'];
-                foreach ($hoTens as $index => $hoTen){
-                    if (trim($hoTen) == ''){
-                        continue;
-                    }
-                    $oCung = new NguoiOCung();
-                    $oCung->ho_ten = $hoTen;
-                    $oCung->dien_thoai = $dienThoais[$index];
-                    $oCung->hop_dong_id = $hoaDon->phong_khach_id;
-                    if ($oCung->save()){
-                        $detail = new ChiTietOCung();
-                        $detail->hoa_don_id = $hoaDon->id;
-                        $detail->nguoi_o_cung_id = $oCung->id;
-                        $detail->save();
-                    }
-                }
-            }
-            $hoaDon->updateOCung();
-            $chiTietNuoc = ChiTietHoaDon::find()
-                ->andFilterWhere(['hoa_don_id'=>$hoaDon->id])
-                ->andFilterWhere(['dich_vu_id'=>3])->one();
-            $chenhLech = $hoaDon->so_nguoi*$phong->gia_nuoc_nguoi - $chiTietNuoc->thanh_tien;
-            $chiTietNuoc->updateAttributes([
-                'thanh_tien' => $hoaDon->so_nguoi*$phong->gia_nuoc_nguoi
-            ]);
+        }
+
+        // Cập nhật số người: số người ở cùng + 1 (người chính)
+        $hoaDon->so_nguoi = $soNguoiOCung + 1;
+        $hoaDon->save(false); // Lưu không validate để đảm bảo cập nhật
+
+        // Cập nhật chi tiết nước
+        $chiTietNuoc = ChiTietHoaDon::find()
+            ->andWhere(['hoa_don_id' => $hoaDon->id])
+            ->andWhere(['dich_vu_id' => 3])
+            ->one();
+
+        if ($chiTietNuoc) {
+            $thanhTienCu = $chiTietNuoc->thanh_tien;
+            $thanhTienMoi = $hoaDon->so_nguoi * $phong->gia_nuoc_nguoi;
+            $chenhLech = $thanhTienMoi - $thanhTienCu;
+
+            $chiTietNuoc->updateAttributes(['thanh_tien' => $thanhTienMoi]);
+
+            // Cập nhật tổng tiền và chi phí dịch vụ của hóa đơn
             $hoaDon->updateAttributes([
                 'tong_tien' => $hoaDon->tong_tien + $chenhLech,
                 'chi_phi_dich_vu' => $hoaDon->chi_phi_dich_vu + $chenhLech
             ]);
+        } else {
             return [
-                'success' => true,
-                'so_nguoi' => $hoaDon->so_nguoi,
-                'tong_tien' => $hoaDon->tong_tien,
-                'thanh_tien' => number_format($hoaDon->so_nguoi*$phong->gia_nuoc_nguoi, 0, ',', '.'),
-                'content' => 'Cập nhật người ở cùng thành công!'
+                'success' => false,
+                'content' => 'Không tìm thấy chi tiết hóa đơn dịch vụ nước!'
             ];
         }
+
         return [
-            'success' => false,
-            'content' => 'Hóa đơn không hợp lệ!'
+            'success' => true,
+            'so_nguoi' => $hoaDon->so_nguoi,
+            'tong_tien' => $hoaDon->tong_tien,
+            'thanh_tien' => number_format($thanhTienMoi, 0, ',', '.'),
+            'content' => 'Cập nhật người ở cùng thành công!'
         ];
     }
+
 
     public function xoaAnh($id)
     {

@@ -11,7 +11,7 @@ use common\models\User;?>
         <!-- BEGIN LOGO -->
         <div class="page-logo">
             <a href="<?=Yii::$app->urlManager->createUrl('site/index')?>" class="text-default">
-                <?=Html::img('img/logo-sao-do.png', ['width' => '70px'])?>
+                <?=Html::img('hinh-anh/LivingApartment.png', ['width' => '70px'])?>
             </a>
         </div>
         <!-- END LOGO -->

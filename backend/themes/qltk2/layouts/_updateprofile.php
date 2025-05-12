@@ -8,9 +8,9 @@
 <?php \yii\bootstrap\Modal::begin([
     'id' => 'modal-updateProfile',
     'size' => \yii\bootstrap\Modal::SIZE_DEFAULT,
-    'header' => '<h4 class="modal-title">Thông tin cá nhân</h4>',
+    'header' => '<h4 class="modal-title"><i class="fas fa-user"></i> Thông tin cá nhân</h4>',
     'footer' => \common\models\myAPI::getBtnCloseModal() .
-        \yii\bootstrap\Html::a('<i class="fa fa-save"></i> Lưu lại', '#', [
+        \yii\bootstrap\Html::a('<i class="fas fa-save"></i> Lưu lại', '#', [
             'class' => 'btn btn-primary btn-saveProfile'
         ])
 ]); ?>
@@ -19,19 +19,92 @@
     'options' => [
         'id' => 'form-updateProfile',
         'class' => 'form-horizontal',
-        'enctype' => 'multipart/form-data'  // Quan trọng nếu bạn upload file
+        'enctype' => 'multipart/form-data'
     ]
 ]); ?>
+<style>
+    body {
+        font-family: 'Helvetica Neue', sans-serif;
+        background-color: #f8f9fa !important;
+    }
 
+    .modal-content {
+        background-color: #ffffff !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .modal-header {
+        background-color: #007bff !important;
+        color: white !important;
+        font-weight: bold !important;
+        border-radius: 8px 8px 0 0 !important;
+    }
+
+    .modal-title {
+        font-size: 1.5rem !important;
+    }
+    .modal-footer .btn-primary, .btn-default{
+        border-radius: 4px !important;
+    }
+
+    .form-group label {
+        color: #555 !important;
+        font-weight: 600 !important;
+    }
+
+    .form-control {
+        background-color: #f1f1f1 !important;
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important;
+        color: #333 !important;
+    }
+
+    .form-control:focus {
+        border-color: #007bff !important;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;
+    }
+
+    .btn-primary {
+        background-color: #007bff !important;
+        border-color: #007bff !important;
+    }
+
+
+    h4.margin-top-20 {
+        margin-top: 20px !important;
+        color: #333 !important;
+    }
+
+    th, td {
+        text-align: left !important;
+    }
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .profile-picture img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <div class="thongbao"></div>
 <div class="row">
-    <!-- Cột bên trái: Ảnh đại diện và nút Upload -->
+    <!-- Cột bên trái: Ảnh đại diện -->
     <div class="col-sm-4">
         <div class="profile-picture text-center">
             <?php
             // Kiểm tra người dùng đăng nhập, hiển thị ảnh hoặc ảnh mặc định
             $avatar = Yii::$app->user->isGuest
-                ? '/images/no-avatar.png'
+                ? '/hinh-anh/no-image.jpg'
                 : \yii\helpers\Url::to('@web/hinh-anh/' . Yii::$app->user->identity->anhdaidien);
             ?>
             <img src="<?= $avatar ?>" alt="Avatar" class="img-responsive img-circle" style="margin:0 auto; max-width: 100%;">

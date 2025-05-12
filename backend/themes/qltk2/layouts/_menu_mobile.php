@@ -15,7 +15,7 @@ use common\models\myAPI;
     <?php if(myAPI::isAccess2('PhongKhach', 'index')): ?>
         <li class="classic-menu-dropdown">
             <a data-toggle="dropdown" href="javascript:;" data-hover="megamenu-dropdown" data-close-others="true">
-                <i class="fa fa-sticky-note-o"></i> Hợp đồng <i class="fa fa-angle-down"></i></a>
+                <i class="fa fa-file-contract"></i> Hợp đồng <i class="fa fa-angle-down"></i></a>
             <ul class="dropdown-menu pull-left">
                 <?php if(myAPI::isAccess2('PhongKhach', 'create')):?>
                     <li>

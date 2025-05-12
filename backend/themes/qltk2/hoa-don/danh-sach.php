@@ -27,7 +27,7 @@ $domain = \backend\models\CauHinh::findOne(['ghi_chu' => 'domain'])->content;
     }
     .hoa-don-table thead {
         background: linear-gradient(90deg, #e0f2fe, #dbeafe) !important;
-        color: #064e3b !important;
+        color: #1e3a8a !important;
         text-align: center !important;
     }
     .hoa-don-table thead th {
@@ -39,22 +39,19 @@ $domain = \backend\models\CauHinh::findOne(['ghi_chu' => 'domain'])->content;
         letter-spacing: 0.5px !important;
         text-align: center !important;
         position: sticky !important;
-        background: linear-gradient(90deg, #e0f7fa, #e8f5e9) !important;
-
-        top: 44px; /* Vị trí cố định khi cuộn đến đầu */
-        z-index: 1; /* Đảm bảo nằm trên phần tử khác */
+        background: radial-gradient(circle, #f0f9ff, #c2daf3) !important;
+        top: 44px;
+        z-index: 1;
 
     }
     .hoa-don-table thead th i {
-        color: #064e3b !important;
+        color: #1e3a8a !important;
         display: block !important;
     }
     .hoa-don-table tbody tr {
         transition: background-color 0.2s, transform 0.2s !important;
     }
-    .hoa-don-table tbody tr:nth-child(even) {
-        background: #f8fafc !important;
-    }
+
     .hoa-don-table tbody tr:hover {
         background: #f0f5ff !important;
         transform: translateY(-1px) !important;
@@ -149,16 +146,16 @@ $domain = \backend\models\CauHinh::findOne(['ghi_chu' => 'domain'])->content;
         border: 1px solid white !important;
     }
     .hoa-don-table .btn-primary {
-        background: #f0f5ff;
+        background: #f0f5ff !important;
         border: none !important;
         font-size: 1.2rem !important;
         padding: 6px 10px !important;
         border-radius: 6px !important;
         transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s !important;
-        color: #2d3748 !important;
+        color: #1e3a8a !important;
     }
     .hoa-don-table .btn-primary:hover {
-        background: linear-gradient(45deg, #2563eb, #3b82f6) !important;
+        background: radial-gradient(circle, #3b82f6, #1e3a8a) !important;
         transform: translateY(-1px) !important;
         color: white !important;
         box-shadow: 0 4px 8px rgba(59,130,246,0.3) !important;
@@ -195,6 +192,7 @@ $domain = \backend\models\CauHinh::findOne(['ghi_chu' => 'domain'])->content;
     .btn-upload{
         width: 100% !important;
         cursor: pointer;
+        text-align: center;
     }
     .hoa-don-table .btn-upload input[type="file"] {
         position: absolute !important;
@@ -208,7 +206,7 @@ $domain = \backend\models\CauHinh::findOne(['ghi_chu' => 'domain'])->content;
 </style>
 
 <div class="hoa-don-table">
-    <table class="table text-nowrap table-responsive">
+    <table class="table text-nowrap table-striped table-responsive">
         <thead id="tieu-de">
         <tr>
             <?php if ($typeHienThi != 'hien_thi'): ?>

@@ -8,8 +8,8 @@
 
 <?php \yii\bootstrap\Modal::begin([
     'id' => 'modal-doimatkhau',
-    'size' => \yii\bootstrap\Modal::SIZE_SMALL,
-    'header' => '<h4 class="modal-title">Đổi mật khẩu</h4>',
+    'size' => \yii\bootstrap\Modal::SIZE_DEFAULT,
+    'header' => '<h4 class="modal-title"><i class="fas fa-unlock"></i> Đổi mật khẩu</h4>',
     'footer' => \common\models\myAPI::getBtnCloseModal().\yii\bootstrap\Html::a('<i class="fa fa-save"></i> Thực hiện', '#', ['class' => 'btn btn-primary btn-thuchiendoimatkhau'])
 ])?>
 <?php $form = \yii\bootstrap\ActiveForm::begin([

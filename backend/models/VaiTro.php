@@ -26,6 +26,7 @@ class VaiTro extends ActiveRecord
     const CHU_TICH = 'Chủ Tịch';
     const KHACH_HANG = 'Khách hàng';
     const QUAN_LY_KHO = 'Quản lý kho';
+    const SALE = 'Sale';
     /**
      * @inheritdoc
      */
@@ -41,7 +42,8 @@ class VaiTro extends ActiveRecord
         self::TRUONG_NHOM => self::TRUONG_NHOM,
         self::CHU_TICH => self::CHU_TICH,
         self::KHACH_HANG => self::KHACH_HANG,
-        self::QUAN_LY_KHO => self::QUAN_LY_KHO
+        self::QUAN_LY_KHO => self::QUAN_LY_KHO,
+        self::SALE => self::SALE
     ];
 
     /**

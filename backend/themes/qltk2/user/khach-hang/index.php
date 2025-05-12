@@ -3,7 +3,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use kartik\grid\GridView;
-use johnitvn\ajaxcrud\CrudAsset; 
+use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
 
 /* @var $this yii\web\View */
@@ -60,36 +60,37 @@ CrudAsset::register($this);
 
     /* Nút Xem */
     .btn-view {
-        background-color: #28a745; /* Màu xanh lá cây (green) */
+        background-color: #6c757d; /* Màu xám nhạt */
         color: white;
     }
 
     .btn-view:hover {
-        background-color: #218838; /* Màu khi hover */
+        background-color: #5a6268; /* Màu xám đậm hơn khi hover */
         color: white;
     }
 
     /* Nút Sửa */
     .btn-edit {
-        background-color: #fd7e14; /* Màu cam (orange) */
+        background-color: #f8c923; /* Màu vàng nhạt */
         color: white;
     }
 
     .btn-edit:hover {
-        background-color: #e56a10; /* Màu khi hover */
+        background-color: #e6b91e; /* Màu vàng đậm hơn khi hover */
         color: white;
     }
 
     /* Nút Xóa */
     .btn-delete {
-        background-color: #fd0000; /* Màu xám (gray) */
+        background-color: #dc3545; /* Màu đỏ nhẹ */
         color: white;
     }
 
     .btn-delete:hover {
-        background-color: #da1212; /* Màu khi hover */
+        background-color: #c82333; /* Màu đỏ đậm hơn khi hover */
         color: white;
     }
+
 
     .user-detail-popup {
         padding: 20px !important;
