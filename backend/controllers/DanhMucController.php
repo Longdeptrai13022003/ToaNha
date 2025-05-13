@@ -850,17 +850,23 @@ class DanhMucController extends Controller
         $dataChi = [];
         $dataLoiNhuan = [];
         while($timeIndex <= $timeNow){
-            $tongThu = QuanLyHoaDon::find()
+            $queryThu = QuanLyHoaDon::find()
                 ->andFilterWhere(['active' => 1])
                 ->andFilterWhere(['thang' => (int)date('m', $timeIndex)])
-                ->andFilterWhere(['nam' => (int)date('Y', $timeIndex)])
-                ->andFilterWhere(['parent_id' => $_POST['toaNhaID']])
-                ->sum('da_thanh_toan') ?? 0;
-            $phieuChis = PhieuChi::find()
+                ->andFilterWhere(['nam' => (int)date('Y', $timeIndex)]);
+            if (!empty($_POST['toaNhaID'])) {
+                $queryThu->andFilterWhere(['parent_id' => $_POST['toaNhaID']]);
+            }
+            $tongThu = $queryThu->sum('da_thanh_toan') ?? 0;
+
+            $queryChi = PhieuChi::find()
                 ->andFilterWhere(['active' => 1])
                 ->andFilterWhere(['thang' => (int)date('m', $timeIndex)])
-                ->andFilterWhere(['nam' => (int)date('Y', $timeIndex)])
-                ->andFilterWhere(['toa_nha_id' => $_POST['toaNhaID']])->all();
+                ->andFilterWhere(['nam' => (int)date('Y', $timeIndex)]);
+            if (!empty($_POST['toaNhaID'])) {
+                $queryChi->andFilterWhere(['toa_nha_id' => $_POST['toaNhaID']]);
+            }
+            $phieuChis = $queryChi->all();
             $tongChi = 0;
             foreach($phieuChis as $phieuChi){
                 $tongChi += ChiTietChiPhi::find()
@@ -899,7 +905,6 @@ class DanhMucController extends Controller
             'loiNhuan' => number_format($tongThu - $tongChi,0,',','.'),
         ];
     }
-
     //thong-ke-thu-chi
     public function actionThongKeThuChi() {
         $fromDate = myAPI::convertDMY2YMD($_POST['from_ngay_thong_ke']);
