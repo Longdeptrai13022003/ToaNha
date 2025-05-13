@@ -172,7 +172,7 @@ return [
     [
         'header' => 'Duyệt',
         'value' => function($data) {
-            return $data->trang_thai_giao_dich != GiaoDich::KHOI_TAO ? '' : Html::a('<i class="fa fa-check-circle-o"></i> Duyệt','#',['class'=>'btn-duyet-trang-thai text-success pull-left','data-pjax' => 0,'data-value'=>$data->id,'loai'=>1]).'<br/>'.
+            return $data->trang_thai_giao_dich != GiaoDich::KHOI_TAO ? '' : Html::a('<i class="fa fa-check-circle"></i> Duyệt','#',['class'=>'btn-duyet-trang-thai text-success pull-left','data-pjax' => 0,'data-value'=>$data->id,'loai'=>1]).'<br/>'.
                 Html::a('<i class="fa fa-ban"></i> Hủy','#',['class'=>'btn-duyet-trang-thai text-danger pull-left','data-pjax' => 0,'data-value'=>$data->id,'loai'=>0]);
         },
         'format' => 'raw',
