@@ -27,7 +27,7 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ten_phong',
         'label' => 'Phòng',
-        'headerOptions' => ['width' => '1%'],
+        'headerOptions' => ['width' => '8%'],
         'value' => function($data) {
             return $data->ten_phong.'/'.$data->ten_toa_nha;
         },
@@ -50,7 +50,7 @@ return [
         'label' => 'Khách hàng',
         'headerOptions' => ['width' => 'auto'],
         'value' => function($data) {
-            return $data->hoten.'<br/><i class="fa fa-phone"></i> '.$data->dien_thoai;
+            return '<i class="fas fa-user"></i> '.$data->hoten. '<span>. | </span>' .'<i class="fa fa-phone"></i> '.$data->dien_thoai;
         },
         'format' => 'raw',
         'filter' => Html::activeTextInput(
@@ -197,4 +197,4 @@ return [
         'headerOptions' => ['width' => '1%', 'class' => 'text-center'],
         'contentOptions' => ['class' => 'text-center']
     ],
-];   
+];

@@ -22,7 +22,7 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'selected',
-        'headerOptions' => ['width' => '1%'],
+        'headerOptions' => ['width' => '20%'],
         'label' => 'Trạng thái',
         'filter' => Html::activeDropDownList(
             $searchModel, 'selected',
@@ -42,7 +42,7 @@ return [
                 $currentTime = time();
 
                 if($inputTime > $limitTime){
-                    return '<center><span class="text-success">Có khách</span></center>';
+                    return '<center><span class="text-success">Có khách</span><br><span class="text-primary">Thời hạn: '.date('d/m/Y H:i:s', strtotime($data->thoi_gian_hop_dong_den)).'</span></center>';
                 }else{
                     $daysLeft = ceil(($inputTime - $currentTime) / (60 * 60 * 24)) + 1;
                     return '<center><span class="text-danger">Sắp hết hạn</span></br><span class="text-primary">Còn '.$daysLeft.' ngày</span></center>';
@@ -57,7 +57,7 @@ return [
         'attribute'=>'hoten',
         'headerOptions' => ['width' => 'auto'],
         'value' => function ($data) {
-            return $data->ma_hop_dong == null ? '' : $data->hoten.'<br/><i class="fa fa-phone"></i> '.$data->dien_thoai;
+            return $data->ma_hop_dong == null ? '' : $data->hoten.' <i class="fa fa-phone"></i> '.$data->dien_thoai;
         },
         'format'=>'raw',
         'filter' => \yii\helpers\Html::activeTextInput(
@@ -75,7 +75,7 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ma_hop_dong',
-        'headerOptions' => ['width' => '1%'],
+        'headerOptions' => ['width' => '10%'],
         'label' => 'Mã hợp đồng',
         'filter' => Html::activeTextInput(
             $searchModel, 'name',

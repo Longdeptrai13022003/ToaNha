@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="details">
                 <div class="number">
-                    Tổng thu: <span class="small-font tong_thu"><?=$tongThu?></span>
+                    Tổng thu: <span class="small-font tong_thu"><?=number_format((int)str_replace('.', '', $tongThu), 0, ',', ',')?></span>
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="details">
                 <div class="number">
-                    Tổng chi: <span class="small-font tong_chi"><?=$tongChi?></span>
+                    Tổng chi: <span class="small-font tong_chi"><?=number_format((int)str_replace('.', '', $tongChi), 0, ',', ',')?></span>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="details">
                 <div class="number">
-                    Lợi nhuận: <span class="small-font loi_nhuan"><?=$loiNhuan?></span>
+                    Lợi nhuận: <span class="small-font loi_nhuan"><?=number_format((int)str_replace('.', '', $loiNhuan), 0, ',', ',')?></span>
                 </div>
             </div>
         </div>
