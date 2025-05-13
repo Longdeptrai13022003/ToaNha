@@ -178,8 +178,6 @@ $(document).ready(function () {
 
         var toaNhaID = $(this).val();
 
-        if (!toaNhaID) return;
-
         // Xóa dữ liệu cũ
         chart.series.each(function(series) {
             series.data.clear();
