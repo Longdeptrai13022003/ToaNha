@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-3">
         <div class="margin-bottom-15">
             <?= Html::label('Tòa nhà','toa-nha-id')?>
-            <?= Html::dropDownList('toa_nha_id',$toaNhaID,$toanhaids,['class'=>'form-control drop-select','id'=>'toa-nha-id']);?>
+            <?= Html::dropDownList('toa_nha_id',$toaNhaID,$toanhaids,['class'=>'form-control drop-select','id'=>'toa-nha-id','prompt'=>'-- Tất cả --']);?>
         </div>
     </div>
 </div>

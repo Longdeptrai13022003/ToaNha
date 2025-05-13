@@ -900,9 +900,9 @@ class DanhMucController extends Controller
             'dataChi' => $dataChi,
             'dataLoiNhuan' => $dataLoiNhuan,
             'chartDatas' => $chartDatas,
-            'tongThu' => number_format($tongThu,0,',','.'),
-            'tongChi' => number_format($tongChi,0,',','.'),
-            'loiNhuan' => number_format($tongThu - $tongChi,0,',','.'),
+            'tongThu' => number_format($tongThu,0,'.',','),
+            'tongChi' => number_format($tongChi,0,'.',','),
+            'loiNhuan' => number_format($tongThu - $tongChi,0,'.',','),
         ];
     }
     //thong-ke-thu-chi
