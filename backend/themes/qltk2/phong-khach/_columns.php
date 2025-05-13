@@ -32,7 +32,7 @@ return [
         'headerOptions' => ['width' => '20%', 'class' => 'text-center'],
         'contentOptions' => ['class' => 'align-middle'],
         'value' => function ($data) {
-            return '<strong>'.$data->hoten.'</strong>'.' <span><i class="fa fa-phone"></i> '.$data->dien_thoai.'</span>';
+            return '<strong>'.$data->hoten.'</strong>'.' <span>(<i class="fa fa-phone"></i> '.$data->dien_thoai.')</span>';
         },
         'format'=>'raw',
         'filter' => \yii\helpers\Html::activeTextInput(
@@ -54,7 +54,7 @@ return [
         'headerOptions' => ['width' => '20%', 'class' => 'text-center'],
         'contentOptions' => ['class' => 'align-middle'],
         'value' => function ($data) {
-            return $data->hoten_sale == null ? '' : '<strong>'.$data->hoten_sale.'</strong> <i class="fa fa-phone"></i> '.$data->dien_thoai_sale;
+            return $data->hoten_sale == null ? '' : '<strong>'.$data->hoten_sale.'</strong> (<i class="fa fa-phone"></i> '.$data->dien_thoai_sale.')';
         },
         'format'=>'raw',
         'filter' => \yii\helpers\Html::activeTextInput(
