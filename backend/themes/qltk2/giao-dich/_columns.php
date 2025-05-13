@@ -8,193 +8,255 @@ use yii\helpers\Url;
 
 return [
     [
-        'class' => 'kartik\grid\SerialColumn',
-        'width' => '30px',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'ma_hop_dong',
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'ma_hop_dong',
         'label' => 'Hợp đồng',
-        'headerOptions' => ['width' => '1%'],
+        'width' => '1%',
+        'headerOptions' => ['class' => 'bg-light'],
+        'contentOptions' => ['class' => 'text-nowrap', 'style' => 'padding: 12px 8px;'],
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'ma_hoa_don',
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'ma_hoa_don',
         'label' => 'Hóa đơn',
-        'headerOptions' => ['width' => '1%'],
+        'width' => '1%',
+        'headerOptions' => ['class' => 'bg-light'],
+        'contentOptions' => ['class' => 'text-nowrap', 'style' => 'padding: 12px 8px;'],
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'ten_phong',
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'ten_phong',
         'label' => 'Phòng',
-        'headerOptions' => ['width' => '8%'],
+        'width' => '1%',
+        'headerOptions' => ['class' => 'bg-light'],
         'value' => function($data) {
-            return $data->ten_phong.'/'.$data->ten_toa_nha;
+            return Html::encode($data->ten_phong) . ' / ' . Html::encode($data->ten_toa_nha);
         },
         'format' => 'raw',
         'filter' => Html::activeTextInput(
-                $searchModel,'ten_phong',[
-                    'class'=>'form-control',
-                    'placeholder'=>'Tên phòng'
+                $searchModel,
+                'ten_phong',
+                [
+                    'class' => 'form-control',
+                    'placeholder' => 'Tên phòng',
+                    'style' => 'margin-bottom: 5px;',
                 ]
-            ).Html::activeTextInput(
-                $searchModel,'ten_toa_nha',[
-                    'class'=>'form-control',
-                    'placeholder'=>'Tên tòa nhà'
+            ) . Html::activeTextInput(
+                $searchModel,
+                'ten_toa_nha',
+                [
+                    'class' => 'form-control',
+                    'placeholder' => 'Tên tòa nhà',
                 ]
-            )
+            ),
+        'contentOptions' => ['class' => 'text-nowrap', 'style' => 'padding: 12px 8px;'],
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'hoten',
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'hoten',
         'label' => 'Khách hàng',
-        'headerOptions' => ['width' => 'auto'],
+        'width' => 'auto',
+        'headerOptions' => ['class' => 'bg-light'],
         'value' => function($data) {
-            return '<i class="fas fa-user"></i> '.$data->hoten. '<span>. | </span>' .'<i class="fa fa-phone"></i> '.$data->dien_thoai;
+            return '<div style="word-wrap: break-word;">' .
+                '<i class="fa fa-user text-primary" style="margin-right: 5px;"></i>' . Html::encode($data->hoten) . '|' .
+                '<i class="fa fa-phone text-success" style="margin-right: 5px;"></i>' . Html::encode($data->dien_thoai) .
+                '</div>';
         },
         'format' => 'raw',
         'filter' => Html::activeTextInput(
-                $searchModel,'hoten',[
-                    'class'=>'form-control',
-                    'placeholder'=>'Tên khách'
+                $searchModel,
+                'hoten',
+                [
+                    'class' => 'form-control',
+                    'placeholder' => 'Tên khách',
+                    'style' => 'margin-bottom: 5px;',
                 ]
-            ).Html::activeTextInput(
-                $searchModel,'dien_thoai',[
-                    'class'=>'form-control',
-                    'placeholder'=>'Điện thoại'
+            ) . Html::activeTextInput(
+                $searchModel,
+                'dien_thoai',
+                [
+                    'class' => 'form-control',
+                    'placeholder' => 'Điện thoại',
                 ]
-            )
+            ),
+        'contentOptions' => ['style' => 'padding: 12px 8px;'],
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'created',
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'created',
         'label' => 'Ngày thực hiện',
-        'headerOptions' => ['width' => '1%'],
+        'width' => '8%',
+        'headerOptions' => ['class' => 'bg-light'],
         'value' => function($data) {
-            $parts = explode(' ',$data->created);
-            return '<center>'.implode('/',array_reverse(explode('-',$parts[0]))).'</center>';
+            $parts = explode(' ', $data->created);
+            return '<div class="text-center">' . implode('/', array_reverse(explode('-', $parts[0]))) . '</div>';
         },
         'format' => 'raw',
         'filter' => Html::activeTextInput(
-                $searchModel,'created',[
-                    'class'=>'form-control',
-                    'placeholder'=>'Thời gian từ',
-                    'id'=>'thoi-gian-tu'
+                $searchModel,
+                'created',
+                [
+                    'class' => 'form-control',
+                    'placeholder' => 'Thời gian từ',
+                    'id' => 'thoi-gian-tu',
+                    'style' => 'margin-bottom: 5px;',
                 ]
-            ).Html::activeTextInput(
-                $searchModel,'ghi_chu',[
-                    'class'=>'form-control',
-                    'placeholder'=>'Thời gian đến',
-                    'id'=>'thoi-gian-den'
+            ) . Html::activeTextInput(
+                $searchModel,
+                'ghi_chu',
+                [
+                    'class' => 'form-control',
+                    'placeholder' => 'Thời gian đến',
+                    'id' => 'thoi-gian-den',
                 ]
-            )
+            ),
+        'contentOptions' => ['class' => 'text-center', 'style' => 'padding: 12px 8px;'],
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'nguoi_thuc_hien',
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'nguoi_thuc_hien',
         'label' => 'Người thực hiện',
-        'headerOptions' => ['width' => '1%'],
+        'width' => '1%',
+        'headerOptions' => ['class' => 'bg-light'],
         'filter' => Html::activeTextInput(
-            $searchModel,'nguoi_thuc_hien',[
-                'class'=>'form-control',
-                'placeholder'=>'Thực hiện'
+            $searchModel,
+            'nguoi_thuc_hien',
+            [
+                'class' => 'form-control',
+                'placeholder' => 'Thực hiện',
             ]
-        )
+        ),
+        'contentOptions' => ['class' => 'text-nowrap', 'style' => 'padding: 12px 8px;'],
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'tong_tien',
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'tong_tien',
         'label' => 'Số tiền',
-        'headerOptions' => ['width' => '1%'],
+        'width' => '8%',
+        'headerOptions' => ['class' => 'bg-light'],
         'value' => function($data) {
-            return '<div class = "pull-right">'.number_format($data->tong_tien,0,',','.').'</div>';
+            return '<div class="text-right text-success" style="font-weight: bold;">' . number_format($data->tong_tien, 0, ',', '.') . ' VNĐ</div>';
         },
         'format' => 'raw',
-        'filter' => false
+        'filter' => false,
+        'contentOptions' => ['style' => 'padding: 12px 8px;'],
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'trang_thai_giao_dich',
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'trang_thai_giao_dich',
         'label' => 'Trạng thái',
-        'headerOptions' => ['width' => '1%'],
+        'width' => '8%',
+        'headerOptions' => ['class' => 'bg-light'],
         'value' => function($data) {
-            if ($data->trang_thai_giao_dich == GiaoDich::THANH_CONG)
-                return '<span class="text-success"><i class="fa fa-check-circle-o"></i> '.GiaoDich::THANH_CONG.'</span>';
-            elseif ($data->trang_thai_giao_dich == GiaoDich::KHONG_THANH_CONG)
-                return '<span class="text-danger"><i class="fa fa-ban"></i> '.GiaoDich::KHONG_THANH_CONG.'</span>';
-            else
-                return '<span class="text-warning"><i class="fa fa-refresh"></i> '.GiaoDich::KHOI_TAO.'</span>';
+            if ($data->trang_thai_giao_dich == GiaoDich::THANH_CONG) {
+                return '<span class="label label-success"><i class="fa fa-check-circle" style="margin-right: 5px;"></i>' . GiaoDich::THANH_CONG . '</span>';
+            } elseif ($data->trang_thai_giao_dich == GiaoDich::KHONG_THANH_CONG) {
+                return '<span class="label label-danger"><i class="fa fa-ban" style="margin-right: 5px;"></i>' . GiaoDich::KHONG_THANH_CONG . '</span>';
+            } else {
+                return '<span class="label label-warning"><i class="fa fa-refresh" style="margin-right: 5px;"></i>' . GiaoDich::KHOI_TAO . '</span>';
+            }
         },
         'format' => 'raw',
-        'filter' => \yii\helpers\Html::activeDropDownList(
+        'filter' => Html::activeDropDownList(
             $searchModel,
             'trang_thai_giao_dich',
             [
-                GiaoDich::KHOI_TAO=>GiaoDich::KHOI_TAO,
-//                GiaoDich::CHO_XAC_MINH=>GiaoDich::CHO_XAC_MINH,
-                GiaoDich::THANH_CONG=>GiaoDich::THANH_CONG,
-                GiaoDich::KHONG_THANH_CONG=>GiaoDich::KHONG_THANH_CONG,
-//                GiaoDich::CHO_DUYET_HUY=>GiaoDich::CHO_DUYET_HUY,
-//                GiaoDich::DA_HUY=>GiaoDich::DA_HUY
+                GiaoDich::KHOI_TAO => GiaoDich::KHOI_TAO,
+                GiaoDich::THANH_CONG => GiaoDich::THANH_CONG,
+                GiaoDich::KHONG_THANH_CONG => GiaoDich::KHONG_THANH_CONG,
             ],
-            ['class'=>'form-control','prompt' => 'Tất cả']
-        )
+            ['class' => 'form-control', 'prompt' => 'Tất cả']
+        ),
+        'contentOptions' => ['class' => 'text-center', 'style' => 'padding: 12px 8px;'],
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'ma_id_casso',
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'ma_id_casso',
         'label' => 'Loại giao dịch',
-        'headerOptions' => ['width' => '1%'],
+        'width' => '8%',
+        'headerOptions' => ['class' => 'bg-light'],
         'value' => function($data) {
-            return $data->hoa_don_id == null ? 'Giao dịch hợp đồng' : 'Giao dịch hóa đơn';
+            $type = $data->hoa_don_id == null ? 'Giao dịch hợp đồng' : 'Giao dịch hóa đơn';
+            $color = $data->hoa_don_id == null ? 'label-primary' : 'label-info';
+            return '<span class="label ' . $color . '">' . Html::encode($type) . '</span>';
         },
         'format' => 'raw',
-        'filter' => false
-//        'filter' => \yii\helpers\Html::activeDropDownList(
-//            $searchModel,
-//            'ma_id_casso',
-//            [
-//                1 => 'Giao dịch hợp đồng',
-//                0 => 'Giao dịch hóa đơn'
-//            ],
-//            ['class'=>'form-control','prompt' => 'Tất cả']
-//        )
+        'filter' => false,
+        'contentOptions' => ['class' => 'text-center', 'style' => 'padding: 12px 8px;'],
     ],
     [
         'header' => 'Xem',
+        'width' => '1%',
         'value' => function($data) {
-            return \yii\bootstrap\Html::a('<i class="fa fa-eye"></i>',Url::toRoute(['giao-dich/view', 'id' => $data->id]), ['role' => 'modal-remote', 'data-toggle' => 'tooltip','id'=>'select2']);
+            return Html::a('<i class="fa fa-eye text-primary"></i>', Url::toRoute(['giao-dich/view', 'id' => $data->id]), [
+                'role' => 'modal-remote',
+                'data-toggle' => 'tooltip',
+                'id' => 'select2',
+                'class' => 'btn btn-sm',
+            ]);
         },
         'format' => 'raw',
-        'headerOptions' => ['width' => '1%', 'class' => 'text-center'],
-        'contentOptions' => ['class' => 'text-center']
+        'headerOptions' => ['class' => 'text-center bg-light'],
+        'contentOptions' => ['class' => 'text-center', 'style' => 'padding: 12px 8px;'],
     ],
     [
         'header' => 'Duyệt',
+        'width' => '1%',
         'value' => function($data) {
-            return $data->trang_thai_giao_dich != GiaoDich::KHOI_TAO ? '' : Html::a('<i class="fa fa-check-circle"></i> Duyệt','#',['class'=>'btn-duyet-trang-thai text-success pull-left','data-pjax' => 0,'data-value'=>$data->id,'loai'=>1]).'<br/>'.
-                Html::a('<i class="fa fa-ban"></i> Hủy','#',['class'=>'btn-duyet-trang-thai text-danger pull-left','data-pjax' => 0,'data-value'=>$data->id,'loai'=>0]);
+            if ($data->trang_thai_giao_dich != GiaoDich::KHOI_TAO) {
+                return '';
+            }
+            return Html::a('<i class="fa fa-check-circle text-success"> Duyệt</i>', '#', [
+                    'class' => 'btn-duyet-trang-thai btn btn-sm',
+                    'data-pjax' => 0,
+                    'data-value' => $data->id,
+                    'loai' => 1,
+                    'style' => 'margin-right: 5px;',
+                ]) . '<br>' . Html::a('<i class="fa fa-ban text-danger"> Huỷ</i>', '#', [
+                    'class' => 'btn-duyet-trang-thai btn btn-sm',
+                    'data-pjax' => 0,
+                    'data-value' => $data->id,
+                    'loai' => 0,
+                ]);
         },
         'format' => 'raw',
-        'headerOptions' => ['width' => '1%', 'class' => 'text-center'],
-        'contentOptions' => ['class' => 'text-center']
+        'headerOptions' => ['class' => 'text-center bg-light'],
+        'contentOptions' => ['class' => 'text-center', 'style' => 'padding: 12px 8px;'],
     ],
     [
         'header' => 'Gửi tin',
+        'width' => '1%',
         'value' => function($data) {
-            return $data->trang_thai_giao_dich != GiaoDich::KHOI_TAO ? '' : Html::a('<i class="fa fa-send"></i>','#',['class'=>'text-primary text-center btn-gui-tin','data-pjax' => 0,'data-value'=>$data->id]);
+            if ($data->trang_thai_giao_dich != GiaoDich::KHOI_TAO) {
+                return '';
+            }
+            return Html::a('<i class="fa fa-send text-info"></i>', '#', [
+                'class' => 'btn btn-sm btn-gui-tin',
+                'data-pjax' => 0,
+                'data-value' => $data->id,
+            ]);
         },
         'format' => 'raw',
-        'headerOptions' => ['width' => '1%', 'class' => 'text-center'],
-        'contentOptions' => ['class' => 'text-center']
+        'headerOptions' => ['class' => 'text-center bg-light'],
+        'contentOptions' => ['class' => 'text-center', 'style' => 'padding: 12px 8px;'],
     ],
     [
         'header' => 'Hủy',
+        'width' => '1%',
         'value' => function($data) {
-            return $data->trang_thai_giao_dich != GiaoDich::KHOI_TAO ? '' : \yii\bootstrap\Html::a('<i class="fa fa-trash"></i>','#', ['class' => 'text-danger','id'=>'btn-huy-giao-dich','data-value'=>$data->id]);
+            if ($data->trang_thai_giao_dich != GiaoDich::KHOI_TAO) {
+                return '';
+            }
+            return Html::a('<i class="fa fa-trash text-danger"></i>', '#', [
+                'class' => 'btn btn-sm',
+                'id' => 'btn-huy-giao-dich',
+                'data-value' => $data->id,
+            ]);
         },
         'format' => 'raw',
-        'headerOptions' => ['width' => '1%', 'class' => 'text-center'],
-        'contentOptions' => ['class' => 'text-center']
+        'headerOptions' => ['class' => 'text-center bg-light'],
+        'contentOptions' => ['class' => 'text-center', 'style' => 'padding: 12px 8px;'],
     ],
 ];
+?>
